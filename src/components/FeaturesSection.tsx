@@ -1,11 +1,11 @@
 
 import React from 'react';
-import { Leaf, Rice, Sprout } from 'lucide-react';
+import { Leaf, Sprout, Wheat } from 'lucide-react';
 
 const FeaturesSection: React.FC = () => {
   const features = [
     {
-      icon: Rice,
+      icon: Wheat,
       title: 'Crop Health Analysis',
       description: 'Quickly identify the health status of your paddy crops using advanced image recognition.'
     },

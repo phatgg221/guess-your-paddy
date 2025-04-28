@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Leaf, Rice, Wheat } from 'lucide-react';
+import { Leaf, Wheat, Sprout } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
@@ -13,9 +13,9 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ imageData }) => {
   // You would replace this with the actual API call and results
   
   const mockResults = [
-    { name: 'Healthy Paddy', probability: 85, icon: Rice },
+    { name: 'Healthy Paddy', probability: 85, icon: Wheat },
     { name: 'Bacterial Leaf Blight', probability: 10, icon: Leaf },
-    { name: 'Rice Blast', probability: 5, icon: Wheat },
+    { name: 'Rice Blast', probability: 5, icon: Sprout },
   ];
   
   if (!imageData) return null;
