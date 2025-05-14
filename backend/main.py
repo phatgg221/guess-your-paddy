@@ -9,10 +9,3 @@ try:
 except Exception as e:
     print(f"Error loading model: {e}")
     exit()
-
-@app.get("/get")
-def read_root():
-    if loaded_best_model:
-        return {"Hello": "World"}
-    else:
-        return {"nothing to show"}
