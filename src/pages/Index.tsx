@@ -1,23 +1,77 @@
-
-import React, { useState } from 'react';
-import Header from '@/components/Header';
-import ImageUpload from '@/components/ImageUpload';
-import ResultsDisplay from '@/components/ResultsDisplay';
-import FeaturesSection from '@/components/FeaturesSection';
-import Footer from '@/components/Footer';
-import { Wheat } from 'lucide-react';
+import { useState } from "react";
+import Header from "@/components/Header";
+import ImageUpload from "@/components/ImageUpload";
+import ResultsDisplay from "@/components/ResultsDisplay";
+import FeaturesSection from "@/components/FeaturesSection";
+import Footer from "@/components/Footer";
+import { Wheat } from "lucide-react";
 
 const Index = () => {
+  // State to hold the image data and analysis results
   const [imageData, setImageData] = useState<string | null>(null);
+  const [analysisResults, setAnalysisResults] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Function to handle image file input change
   const handleImageUploaded = (data: string | ArrayBuffer | null) => {
     setImageData(data as string);
+    // We no longer automatically analyze here
+  };
+
+  // Function to convert file to base64
+  const getBase64 = (file: File) => {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+    });
+  };
+
+  // Handle upload and analysis
+  const handleAnalyze = async () => {
+    if (!imageData) return;
+
+    const base64ImageData = imageData.split(",")[1]; // Extract the base64 part
+
+    setLoading(true);
+    setError(null);
+
+    console.log("Starting image analysis... ", base64ImageData);
+    try {
+      const response = await fetch(
+        "https://b7xvm2k9w5.execute-api.ap-southeast-2.amazonaws.com/pro/predict", // Your endpoint
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image_data: base64ImageData,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      console.log("Response received:", response);
+      const data = await response.json();
+      console.log("Image analysis results:", data);
+      setAnalysisResults(data);
+    } catch (uploadError: any) {
+      setError("Error analyzing image: " + uploadError.message);
+      console.error("Analysis error:", uploadError);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-crop-pattern">
       <Header />
-      
+
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-12 md:py-16 px-4">
@@ -25,19 +79,22 @@ const Index = () => {
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center justify-center p-2 bg-crop-primary/10 rounded-full mb-4">
                 <Wheat className="h-5 w-5 text-crop-primary mr-2" />
-                <span className="text-sm font-medium text-crop-primary">Paddy & Crop Analysis</span>
+                <span className="text-sm font-medium text-crop-primary">
+                  Paddy & Crop Analysis
+                </span>
               </div>
               <h1 className="text-3xl md:text-5xl font-bold text-crop-primary leading-tight mb-6">
                 Analyze Your Crop Health With Advanced AI
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8">
-                Upload an image of your paddy or crop and our ML model will analyze its health, 
-                identify potential diseases, and provide actionable insights.
+                Upload an image of your paddy or crop and our ML model will
+                analyze its health, identify potential diseases, and provide
+                actionable insights.
               </p>
             </div>
           </div>
         </section>
-        
+
         {/* Upload & Results Section */}
         <section className="py-8 md:py-12 px-4">
           <div className="container">
@@ -48,16 +105,33 @@ const Index = () => {
                     Upload Your Crop Image
                   </h2>
                   <div className="flex-grow">
-                    <ImageUpload onImageUploaded={handleImageUploaded} />
+                    <ImageUpload
+                      onImageUploaded={handleImageUploaded}
+                      isAnalyzing={loading}
+                    />
+                    {error && (
+                      <p className="mt-4 text-red-500 text-sm">{error}</p>
+                    )}
+                    <button
+                      onClick={handleAnalyze}
+                      disabled={loading || !imageData}
+                      className="mt-4 px-6 py-3 bg-crop-primary text-white font-medium rounded-lg hover:bg-opacity-90 transition-colors"
+                    >
+                      {loading ? "Analyzing..." : "Start Analyzing"}
+                    </button>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col">
                   <h2 className="text-xl md:text-2xl font-semibold mb-6 text-crop-primary">
                     Analysis Results
                   </h2>
                   {imageData ? (
-                    <ResultsDisplay imageData={imageData} />
+                    <ResultsDisplay
+                      imageData={imageData}
+                      analysisResults={analysisResults}
+                      isLoading={loading}
+                    />
                   ) : (
                     <div className="flex-grow flex items-center justify-center border-2 border-dashed border-border rounded-lg p-6">
                       <p className="text-muted-foreground text-center">
@@ -70,10 +144,10 @@ const Index = () => {
             </div>
           </div>
         </section>
-        
+
         {/* Features Section */}
         <FeaturesSection />
-        
+
         {/* CTA Section */}
         <section className="py-16 px-4 bg-gradient-to-br from-crop-primary to-crop-secondary text-white">
           <div className="container">
@@ -82,7 +156,8 @@ const Index = () => {
                 Ready to Optimize Your Farming Practices?
               </h2>
               <p className="text-lg opacity-90 mb-8">
-                Start using our advanced crop analysis tools today and make data-driven decisions for your agricultural needs.
+                Start using our advanced crop analysis tools today and make
+                data-driven decisions for your agricultural needs.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <button className="px-6 py-3 bg-white text-crop-primary font-medium rounded-lg hover:bg-opacity-90 transition-colors">
@@ -96,7 +171,7 @@ const Index = () => {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );
