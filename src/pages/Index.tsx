@@ -5,7 +5,12 @@ import ResultsDisplay from "@/components/ResultsDisplay";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import { Wheat } from "lucide-react";
+import { AdvancedImage, placeholder } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen";
 
+const api_key = "684852851754247";
+const cloud_name = "dhjapmqga";
+const api_secret = "5x7_Y5k1pjekQFG5mHQaVrnP414";
 const Index = () => {
   // State to hold the image data and analysis results
   const [imageData, setImageData] = useState<string | null>(null);
@@ -13,20 +18,41 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 5x7_Y5k1pjekQFG5mHQaVrnP414
+  //phat
+  // 684852851754247
+  //cloud name dhjapmqga
   // Function to handle image file input change
   const handleImageUploaded = (data: string | ArrayBuffer | null) => {
     setImageData(data as string);
-    // We no longer automatically analyze here
   };
 
-  // Function to convert file to base64
-  const getBase64 = (file: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-    });
+  // Handle the image upload to Cloudinary
+  const handleUploadToCloudinary = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "lzz18aot");
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dhjapmqga/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Cloudinary upload failed");
+      }
+      const data = await response.json();
+      const imageUrl = data.secure_url;
+      console.log("Image uploaded to Cloudinary:", imageUrl);
+      return imageUrl;
+    } catch (uploadError) {
+      setError("Error uploading image: " + uploadError.message);
+      console.error(uploadError);
+    }
   };
 
   // Handle upload and analysis
@@ -40,23 +66,24 @@ const Index = () => {
 
     console.log("Starting image analysis... ", base64ImageData);
     try {
-      const response = await fetch(
-        "https://b7xvm2k9w5.execute-api.ap-southeast-2.amazonaws.com/pro/predict", // Your endpoint
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            image_data: base64ImageData,
-          }),
-        }
-      );
+      // Upload the image to Cloudinary (you can use this function when an image is selected)
+      const imageUrl = await handleUploadToCloudinary(
+        new File([imageData], "image.jpg")
+      ); // Replace with actual image file
+
+      const response = await fetch("https://your-backend-url/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image_url: imageUrl,
+        }),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      console.log("Response received:", response);
       const data = await response.json();
       console.log("Image analysis results:", data);
       setAnalysisResults(data);
