@@ -12,12 +12,11 @@ interface ImageUploadProps {
 const ImageUpload: React.FC<ImageUploadProps> = ({
   onImageUploaded,
   onAnalyzeClick,
-  isAnalyzing = false,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [_, setIsLoading] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -152,25 +151,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               </div>
             )}
           </div>
-          <Button
-            onClick={handleAnalyzeClick}
-            className="w-full mt-4 bg-crop-primary hover:bg-crop-secondary"
-            disabled={isLoading || isAnalyzing}
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
-              </>
-            ) : isAnalyzing ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              "Analyze Image"
-            )}
-          </Button>
         </div>
       )}
     </div>
