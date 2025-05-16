@@ -12,20 +12,17 @@ const api_key = "684852851754247";
 const cloud_name = "dhjapmqga";
 const api_secret = "5x7_Y5k1pjekQFG5mHQaVrnP414";
 const Index = () => {
-  // State to hold the image data and analysis results
   const [imageData, setImageData] = useState<string | null>(null);
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to handle image file input change
   const handleImageUploaded = (data: string | ArrayBuffer | null) => {
     setImageData(data as string);
-    // Reset the results when new image is uploaded
+
     setAnalysisResults(null);
   };
 
-  // Handle the image upload to Cloudinary
   const handleUploadToCloudinary = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -54,7 +51,6 @@ const Index = () => {
     }
   };
 
-  // Handle upload and analysis
   const handleAnalyze = async () => {
     if (!imageData) return;
 
@@ -62,7 +58,6 @@ const Index = () => {
     setError(null);
 
     try {
-      // Upload the image to Cloudinary
       const imageUrl = await handleUploadToCloudinary(
         new File([base64ToBlob(imageData)], "image.jpg", { type: "image/jpeg" })
       );
@@ -71,7 +66,6 @@ const Index = () => {
         throw new Error("Failed to upload image to Cloudinary");
       }
 
-      // First API call for disease detection and age regression
       const response1 = await fetch("http://54.253.111.142/predict", {
         method: "POST",
         headers: {
@@ -87,7 +81,6 @@ const Index = () => {
         throw new Error(`Disease detection failed: ${response1.status}`);
       }
 
-      // Second API call for variety detection
       const response2 = await fetch("http://52.64.110.95/predict", {
         method: "POST",
         headers: {
@@ -134,15 +127,12 @@ const Index = () => {
     }
   };
 
-  // Helper function to convert base64 to Blob
   const base64ToBlob = (base64Data: string) => {
-    // Extract actual base64 data from data URL
     const parts = base64Data.split(";base64,");
     const contentType = parts[0].split(":")[1];
     const raw = window.atob(parts[1]);
     const rawLength = raw.length;
 
-    // Convert to ArrayBuffer
     const uInt8Array = new Uint8Array(rawLength);
     for (let i = 0; i < rawLength; ++i) {
       uInt8Array[i] = raw.charCodeAt(i);
@@ -156,7 +146,6 @@ const Index = () => {
       <Header />
 
       <main className="flex-grow">
-        {/* Hero Section */}
         <section className="py-12 md:py-16 px-4">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
@@ -178,7 +167,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Upload & Results Section */}
         <section className="py-8 md:py-12 px-4">
           <div className="container">
             <div className="max-w-4xl mx-auto">
@@ -228,10 +216,8 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Features Section */}
         <FeaturesSection />
 
-        {/* CTA Section */}
         <section className="py-16 px-4 bg-gradient-to-br from-crop-primary to-crop-secondary text-white">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">

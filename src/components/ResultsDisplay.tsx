@@ -40,7 +40,6 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
 }) => {
   if (!imageData) return null;
 
-  // Show loading states for different analyses
   if (isLoading) {
     return (
       <div className="mt-8 w-full max-w-md mx-auto">
@@ -60,7 +59,6 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
     );
   }
 
-  // If analysis is complete but no results are available
   if (!analysisResults) {
     return (
       <div className="mt-8 w-full max-w-md mx-auto">
