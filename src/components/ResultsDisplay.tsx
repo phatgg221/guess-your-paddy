@@ -1,5 +1,5 @@
 import React from "react";
-import { Leaf, Clock, Plant } from "lucide-react";
+import { Leaf, Clock, Plane } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
@@ -123,7 +123,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             {variety_classification && (
               <div className="space-y-2">
                 <h3 className="font-medium text-crop-primary flex items-center gap-2">
-                  <Plant className="h-4 w-4" />
+                  <Plane className="h-4 w-4" />
                   Rice Variety
                 </h3>
                 <div className="space-y-1">
