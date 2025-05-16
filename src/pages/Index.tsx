@@ -18,13 +18,11 @@ const Index = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // 5x7_Y5k1pjekQFG5mHQaVrnP414
-  //phat
-  // 684852851754247
-  //cloud name dhjapmqga
   // Function to handle image file input change
   const handleImageUploaded = (data: string | ArrayBuffer | null) => {
     setImageData(data as string);
+    // Reset the results when new image is uploaded
+    setAnalysisResults(null);
   };
 
   // Handle the image upload to Cloudinary
@@ -49,9 +47,10 @@ const Index = () => {
       const imageUrl = data.secure_url;
       console.log("Image uploaded to Cloudinary:", imageUrl);
       return imageUrl;
-    } catch (uploadError) {
+    } catch (uploadError: any) {
       setError("Error uploading image: " + uploadError.message);
       console.error(uploadError);
+      throw uploadError;
     }
   };
 
@@ -59,40 +58,97 @@ const Index = () => {
   const handleAnalyze = async () => {
     if (!imageData) return;
 
-    const base64ImageData = imageData.split(",")[1]; // Extract the base64 part
-
     setLoading(true);
     setError(null);
 
-    console.log("Starting image analysis... ", base64ImageData);
     try {
-      // Upload the image to Cloudinary (you can use this function when an image is selected)
+      // Upload the image to Cloudinary
       const imageUrl = await handleUploadToCloudinary(
-        new File([imageData], "image.jpg")
-      ); // Replace with actual image file
+        new File([base64ToBlob(imageData)], "image.jpg", { type: "image/jpeg" })
+      );
 
-      const response = await fetch("http://3.107.201.1/predict", {
+      if (!imageUrl) {
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+
+      // First API call for disease detection and age regression
+      const response1 = await fetch("http://54.253.111.142/predict", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({
           image_url: imageUrl,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (!response1.ok) {
+        throw new Error(`Disease detection failed: ${response1.status}`);
       }
-      const data = await response.json();
-      console.log("Image analysis results:", data);
-      setAnalysisResults(data);
+
+      // Second API call for variety detection
+      const response2 = await fetch("http://52.64.110.95/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          image_url: imageUrl,
+        }),
+      });
+
+      if (!response2.ok) {
+        throw new Error(`Variety detection failed: ${response2.status}`);
+      }
+
+      // Parse both responses
+      const diseaseData = await response1.json();
+      const varietyData = await response2.json();
+
+      console.log("Disease data:", diseaseData);
+      console.log("Variety data:", varietyData);
+
+      // Create a properly structured combined result
+      const combinedResults = {
+        image_url: imageUrl,
+
+        // Add disease classification data from the first API
+        disease_classification: diseaseData.disease_classification,
+
+        // Add age regression data from the first API
+        age_regression: diseaseData.age_regression,
+
+        // Add variety classification from the second API
+        variety_classification: varietyData.variety_classification,
+      };
+
+      console.log("Combined analysis results:", combinedResults);
+      setAnalysisResults(combinedResults);
     } catch (uploadError: any) {
       setError("Error analyzing image: " + uploadError.message);
       console.error("Analysis error:", uploadError);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to convert base64 to Blob
+  const base64ToBlob = (base64Data: string) => {
+    // Extract actual base64 data from data URL
+    const parts = base64Data.split(";base64,");
+    const contentType = parts[0].split(":")[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+
+    // Convert to ArrayBuffer
+    const uInt8Array = new Uint8Array(rawLength);
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
   };
 
   return (

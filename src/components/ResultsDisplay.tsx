@@ -1,5 +1,5 @@
 import React from "react";
-import { Leaf, Clock, Plane } from "lucide-react";
+import { Leaf, Clock, Plant } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
@@ -20,21 +20,27 @@ interface AnalysisResults {
     confidence: number;
     description: string;
   };
+  image_url?: string;
 }
 
 interface ResultsDisplayProps {
   imageData: string | null;
   analysisResults: AnalysisResults | null;
   isLoading: boolean;
+  isVarietyLoading?: boolean;
+  isDiseaseAgeLoading?: boolean;
 }
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
   imageData,
   analysisResults,
   isLoading,
+  isVarietyLoading = false,
+  isDiseaseAgeLoading = false,
 }) => {
   if (!imageData) return null;
 
+  // Show loading states for different analyses
   if (isLoading) {
     return (
       <div className="mt-8 w-full max-w-md mx-auto">
@@ -117,7 +123,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             {variety_classification && (
               <div className="space-y-2">
                 <h3 className="font-medium text-crop-primary flex items-center gap-2">
-                  <Plane className="h-4 w-4" />
+                  <Plant className="h-4 w-4" />
                   Rice Variety
                 </h3>
                 <div className="space-y-1">
@@ -165,12 +171,14 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({
             <p className="mt-1 text-muted-foreground">
               {disease_classification?.class === "normal"
                 ? "The analyzed crop appears to be healthy. Continue with regular watering and fertilization schedule. Monitor for any signs of disease in the coming weeks."
-                : `The analyzed crop shows signs of ${
-                    disease_classification?.class
+                : disease_classification
+                ? `The analyzed crop shows signs of ${
+                    disease_classification.class
                   }. ${
-                    disease_classification?.description ||
+                    disease_classification.description ||
                     "Consider taking appropriate treatment measures."
-                  }`}
+                  }`
+                : "Analysis in progress. Please wait for complete results."}
             </p>
             {variety_classification && (
               <p className="mt-2 text-muted-foreground">
