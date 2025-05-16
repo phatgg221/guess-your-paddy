@@ -71,3 +71,10 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+
+
+# For backend development
+- `Deploy full web: ` http://54.66.75.164/
+- `Variety route or IP `: http://52.64.110.95/predict
+- `Disease and age`: http://54.253.111.142/predict
