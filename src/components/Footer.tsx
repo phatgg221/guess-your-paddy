@@ -8,8 +8,12 @@ const Footer: React.FC = () => {
       <div className="container">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <Sprout className="h-5 w-5 text-crop-primary" />
-            <span className="text-lg font-semibold text-crop-primary">CropScan</span>
+            <img 
+            src="public/logo.png" 
+            alt="Logo" 
+            className="h-10 w-10" 
+          />
+            <span className="text-lg font-semibold text-crop-primary">Guess Your Paddy</span>
           </div>
           
           <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">

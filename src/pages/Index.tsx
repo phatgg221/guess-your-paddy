@@ -158,6 +158,9 @@ const Index = () => {
               <h1 className="text-3xl md:text-5xl font-bold text-crop-primary leading-tight mb-6">
                 Analyze Your Crop Health With Advanced AI
               </h1>
+              <p className="text-sm md:text-base text-crop-secondary font-medium mb-5">
+                Developed by The Liems team
+              </p>
               <p className="text-lg md:text-xl text-muted-foreground mb-8">
                 Upload an image of your paddy or crop and our ML model will
                 analyze its health, identify potential diseases, and provide
