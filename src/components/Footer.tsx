@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <img 
-            src="public/logo.png" 
+            src="logo.png" 
             alt="Logo" 
             className="h-10 w-10" 
           />

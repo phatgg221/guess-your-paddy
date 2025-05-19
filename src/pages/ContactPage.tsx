@@ -7,25 +7,25 @@ const ContactPage = () => {
       name: "Thai Duong",
       role: "Data Analysis",
       handle: "@thaiduongembed",
-      image: "/team/thai_duong.jpg" 
+      image: "duong.jpg" 
     },
     {
       name: "Tri Duong",
       role: "AI Scientist",
       handle: "@tritobacco",
-      image: "/team/tri_duong.jpg"
+      image: "tri.jpg"
     },
     {
       name: "Tai Ngo",
       role: "AI Engineer",
       handle: "@taingo.056",
-      image: "/team/tai_ngo.jpg"
+      image: "tai.jpg"
     },
     {
       name: "Phat Huynh",
       role: "AI Engineer",
       handle: "@lolnoob123",
-      image: "/team/phat_huynh.jpg" 
+      image: "phat.jpg" 
     }
   ];
 
