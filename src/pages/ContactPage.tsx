@@ -25,7 +25,7 @@ const ContactPage = () => {
     {
       name: "Phat Huynh",
       role: "AI Engineer",
-      handle: "@lolnoob123",
+      handle: "@phatgg221",
       image: "phat.jpg" 
     }
   ];
@@ -69,7 +69,7 @@ const ContactPage = () => {
                     </div>
                   </div>
                   <h3 className="text-2xl font-bold mb-1">{member.name}</h3>
-                  <p className="text-lg font-medium text-crop-secondary mb-3">{member.role}</p>
+                  <p className="text-lg font-medium mb-3">{member.role}</p>
                   
                   {/* Social Media Icons */}
                   <div className="flex space-x-3 items-center">
