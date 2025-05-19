@@ -8,7 +8,7 @@ const Header = () => {
       <div className="container flex h-16 items-center">
         <a href='/' className="flex items-center gap-2">
           <img 
-            src="public/logo.png" 
+            src="logo.png" 
             alt="Logo" 
             className="h-10 w-10" 
           />
