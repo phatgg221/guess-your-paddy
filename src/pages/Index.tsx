@@ -81,27 +81,28 @@ const Index = () => {
         throw new Error(`Disease detection failed: ${response1.status}`);
       }
 
-      const response2 = await fetch("http://52.64.110.95/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({
-          image_url: imageUrl,
-        }),
-      });
+      // const response2 = await fetch("http://52.64.110.95/predict", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Access-Control-Allow-Origin": "*",
+      //   },
+      //   body: JSON.stringify({
+      //     image_url: imageUrl,
+      //   }),
+      // });
 
-      if (!response2.ok) {
-        throw new Error(`Variety detection failed: ${response2.status}`);
-      }
+      // if (!response2.ok) {
+      //   throw new Error(`Variety detection failed: ${response2.status}`);
+      // }
 
       // Parse both responses
       const diseaseData = await response1.json();
-      const varietyData = await response2.json();
-
+      // const varietyData =  await response2.json();
+      // console.log(diseaseData.variety_classification);
+      const varietyData = diseaseData.variety_classification;
       console.log("Disease data:", diseaseData);
-      console.log("Variety data:", varietyData);
+      // console.log("Variety data:", varietyData);
 
       // Create a properly structured combined result
       const combinedResults = {
@@ -114,7 +115,7 @@ const Index = () => {
         age_regression: diseaseData.age_regression,
 
         // Add variety classification from the second API
-        variety_classification: varietyData.variety_classification,
+        variety_classification: varietyData,
       };
 
       console.log("Combined analysis results:", combinedResults);
@@ -158,9 +159,6 @@ const Index = () => {
               <h1 className="text-3xl md:text-5xl font-bold text-crop-primary leading-tight mb-6">
                 Analyze Your Crop Health With Advanced AI
               </h1>
-              <p className="text-sm md:text-base text-crop-secondary font-medium mb-5">
-                Developed by The Liems team
-              </p>
               <p className="text-lg md:text-xl text-muted-foreground mb-8">
                 Upload an image of your paddy or crop and our ML model will
                 analyze its health, identify potential diseases, and provide
