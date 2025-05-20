@@ -7,7 +7,7 @@ const ContactPage = () => {
     {
       name: "Thai Duong",
       role: "AI Engineer",
-      handle: "@thaiduongembed",
+      handle: "@TDuong04",
       image: "duong.jpg" 
     },
     {
