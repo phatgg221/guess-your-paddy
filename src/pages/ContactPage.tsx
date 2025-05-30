@@ -15,7 +15,7 @@ const ContactPage = () => {
       name: "Tri Duong",
       role: "AI Scientist",
       handle: "@tritobacco",
-      image: "tri2.jpg",
+      image: "tri.jpg",
       githubLink: "https://github.com/TriDuong070803",
     },
     {

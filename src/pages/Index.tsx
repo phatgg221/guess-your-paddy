@@ -5,8 +5,6 @@ import ResultsDisplay from "@/components/ResultsDisplay";
 import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import { Wheat } from "lucide-react";
-import { AdvancedImage, placeholder } from "@cloudinary/react";
-import { Cloudinary } from "@cloudinary/url-gen";
 
 const api_key = "684852851754247";
 const cloud_name = "dhjapmqga";
@@ -81,28 +79,10 @@ const Index = () => {
         throw new Error(`Disease detection failed: ${response1.status}`);
       }
 
-      // const response2 = await fetch("http://52.64.110.95/predict", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Access-Control-Allow-Origin": "*",
-      //   },
-      //   body: JSON.stringify({
-      //     image_url: imageUrl,
-      //   }),
-      // });
-
-      // if (!response2.ok) {
-      //   throw new Error(`Variety detection failed: ${response2.status}`);
-      // }
-
       // Parse both responses
       const diseaseData = await response1.json();
-      // const varietyData =  await response2.json();
-      // console.log(diseaseData.variety_classification);
       const varietyData = diseaseData.variety_classification;
       console.log("Disease data:", diseaseData);
-      // console.log("Variety data:", varietyData);
 
       // Create a properly structured combined result
       const combinedResults = {
