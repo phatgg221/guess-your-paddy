@@ -1,80 +1,55 @@
-# Welcome to your Lovable project
+# 🌿 Guess Your Paddy – Web Interface
 
-## Project info
+![Tech: React](https://img.shields.io/badge/tech-React-blue)
+![Built With](https://img.shields.io/badge/built%20with-Vite%20%26%20TailwindCSS-green)
+![Status](https://img.shields.io/badge/build-production-orange)
 
-**URL**: https://lovable.dev/projects/4e3ab802-d097-4fe9-a441-270df6468a4d
+A user-friendly web application that demonstrates the functionality of the **Guess Your Paddy** AI system. It allows farmers, researchers, and agricultural stakeholders to:
 
-## How can I edit this code?
+- 🌾 Identify rice variety
+- 🦠 Detect diseases such as Tungro
+- 📅 Estimate the age of rice crops
 
-There are several ways of editing your application.
+Built from scratch using modern web technologies, this frontend is tightly integrated with our AI-powered backend that analyzes rice leaf images and returns actionable predictions to improve crop management and reduce yield loss.
 
-**Use Lovable**
+🔗 **Live Site**: [guessyourpaddy.site](http://guessyourpaddy.site)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4e3ab802-d097-4fe9-a441-270df6468a4d) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 📸 Demo Preview
 
-**Use your preferred IDE**
+![Guess Your Paddy – Demo](images/demo-thumbnail.jpeg)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Quick Start (Local Development)
 
-Follow these steps:
+> You'll need **Node.js & npm**. Install via [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) if needed.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
+```bash
+# 1. Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# 2. Go into the project folder
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# 4. Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## ✨ Features
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- 📷 Upload rice leaf images for instant AI analysis
+- 📊 Real-time results: disease, age, and variety
+- 🧠 AI-driven backend integration
+- 🌐 Fully responsive UI with modern design
 
-**Use GitHub Codespaces**
+## 🤝 Authors
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4e3ab802-d097-4fe9-a441-270df6468a4d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
-
-
-
-# For backend development
-- `Deploy full web: ` http://54.66.75.164/
-- `Variety route or IP `: http://52.64.110.95/predict
-- `Disease and age`: http://54.253.111.142/predict
+- Ngo Van Tai ([Github](https://github.com/TaiVanNgo))
+- Duong Minh Tri ([Github](https://github.com/TriDuong070803))
+- Huynh Thai Duong ([Github](https://github.com/TDuong04))
+- Huynh Tan Phat ([Github](https://github.com/phatgg221))
