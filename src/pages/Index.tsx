@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import ImageUpload from "@/components/ImageUpload";
 import ResultsDisplay from "@/components/ResultsDisplay";
@@ -14,6 +14,16 @@ const Index = () => {
   const [analysisResults, setAnalysisResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pageLoaded, setPageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Set pageLoaded to true after a short delay to trigger animations
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleImageUploaded = (data: string | ArrayBuffer | null) => {
     setImageData(data as string);
@@ -126,20 +136,32 @@ const Index = () => {
     <div className="flex flex-col min-h-screen bg-crop-pattern">
       <Header />
 
-      <main className="flex-grow">
+      <main className="flex-grow overflow-hidden">
         <section className="py-12 md:py-16 px-4">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center justify-center p-2 bg-crop-primary/10 rounded-full mb-4">
-                <Wheat className="h-5 w-5 text-crop-primary mr-2" />
+              <div
+                className={`inline-flex items-center justify-center p-2 bg-crop-primary/10 rounded-full mb-4 transition-all duration-700 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
+                <Wheat className={`h-5 w-5 text-crop-primary mr-2 ${pageLoaded ? "animate-pulse-gentle" : ""}`} />
                 <span className="text-sm font-medium text-crop-primary">
                   Paddy & Crop Analysis
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-crop-primary leading-tight mb-6">
+              <h1
+                className={`text-3xl md:text-5xl font-bold text-crop-primary leading-tight mb-6 transition-all duration-1000 delay-300 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 Analyze Your Crop Health With Advanced AI
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8">
+              <p
+                className={`text-lg md:text-xl text-muted-foreground mb-8 transition-all duration-1000 delay-500 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 Upload an image of your paddy or crop and our ML model will
                 analyze its health, identify potential diseases, and provide
                 actionable insights.
@@ -150,10 +172,16 @@ const Index = () => {
 
         <section className="py-8 md:py-12 px-4">
           <div className="container">
-            <div className="max-w-4xl mx-auto">
+            <div
+              className={`max-w-4xl mx-auto transition-all duration-1000 delay-700 ${
+                pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+              }`}
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex flex-col">
-                  <h2 className="text-xl md:text-2xl font-semibold mb-6 text-crop-primary">
+                  <h2 className={`text-xl md:text-2xl font-semibold mb-6 text-crop-primary transition-all duration-300 ${
+                    pageLoaded ? "animate-highlight" : ""
+                  }`}>
                     Upload Your Crop Image
                   </h2>
                   <div className="flex-grow">
@@ -221,6 +249,37 @@ const Index = () => {
           </div>
         </section>
       </main>
+
+      <style>{`
+        @keyframes pulse-gentle {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+
+        @keyframes highlight {
+          0% { text-shadow: 0 0 0 rgba(0,0,0,0); }
+          30% { text-shadow: 0 0 10px rgba(52, 152, 83, 0.5); }
+          100% { text-shadow: 0 0 0 rgba(0,0,0,0); }
+        }
+
+        .animate-pulse-gentle {
+          animation: pulse-gentle 3s infinite ease-in-out;
+        }
+
+        .animate-highlight {
+          animation: highlight 2s ease-out;
+        }
+
+        /* Add smooth transitions for hover states */
+        button, a {
+          transition: all 0.3s ease;
+        }
+
+        button:hover, a:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+      `}</style>
 
       <Footer />
     </div>

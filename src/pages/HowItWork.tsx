@@ -1,8 +1,20 @@
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Check, FileImage, Cpu, LineChart, FileType, Bird } from "lucide-react";
 
 const HowItWorksPage = () => {
+  const [pageLoaded, setPageLoaded] = useState(false);
+
+  useEffect(() => {
+    // Set pageLoaded to true after a short delay to trigger animations
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   const steps = [
     {
       icon: FileImage,
@@ -34,15 +46,23 @@ const HowItWorksPage = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      <main className="flex-grow">
-        {/* Hero Section */}
+      <main className="flex-grow overflow-hidden">
+        {/* Hero Section with Animation */}
         <section className="py-16 bg-gradient-to-br from-crop-primary to-crop-primary/80 text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1 
+                className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 How Guess Your Paddy Works
               </h1>
-              <p className="text-lg opacity-90 mb-8">
+              <p 
+                className={`text-lg opacity-90 mb-8 transition-all duration-1000 delay-300 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 Our AI-powered platform uses state-of-the-art deep learning
                 models to identify rice diseases, estimate plant age, and
                 determine rice varieties from a single photo.
@@ -51,7 +71,7 @@ const HowItWorksPage = () => {
           </div>
         </section>
 
-        {/* Process Steps */}
+        {/* Process Steps with Staggered Animation */}
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
@@ -59,11 +79,19 @@ const HowItWorksPage = () => {
                 {steps.map((step, index) => (
                   <div
                     key={index}
-                    className="relative p-6 border border-border/40 rounded-lg bg-background shadow-sm hover:shadow-md transition-all"
+                    className={`relative p-6 border border-border/40 rounded-lg bg-background shadow-sm hover:shadow-md transition-all duration-700 delay-${
+                      index * 200 + 300
+                    } ${
+                      pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+                    }`}
                   >
                     <div className="flex justify-center mb-6">
-                      <div className="w-16 h-16 flex items-center justify-center bg-crop-primary/10 rounded-full">
-                        <step.icon className="h-8 w-8 text-crop-primary" />
+                      <div className={`w-16 h-16 flex items-center justify-center bg-crop-primary/10 rounded-full transition-all duration-500 ${
+                        pageLoaded ? "scale-100" : "scale-50"
+                      }`}>
+                        <step.icon className={`h-8 w-8 text-crop-primary transition-all duration-700 ${
+                          pageLoaded ? "opacity-100" : "opacity-0"
+                        }`} />
                       </div>
                     </div>
                     <h3 className="text-xl font-semibold text-crop-primary text-center mb-3">
@@ -79,16 +107,25 @@ const HowItWorksPage = () => {
           </div>
         </section>
 
-        {/* Technology Explanation */}
+        {/* Technology Explanation with Fade-In Animation */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-center text-crop-primary mb-12">
+              <h2 
+                className={`text-3xl font-bold text-center text-crop-primary mb-12 transition-all duration-1000 delay-700 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                }`}
+              >
                 Our Technology
               </h2>
 
               <div className="space-y-12">
-                <div className="bg-background p-6 rounded-lg border border-border/40 shadow-sm">
+                {/* Disease Classification */}
+                <div 
+                  className={`bg-background p-6 rounded-lg border border-border/40 shadow-sm transition-all duration-700 delay-800 ${
+                    pageLoaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+                  }`}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <Bird className="h-6 w-6 text-crop-primary" />
                     <h3 className="text-xl font-semibold text-crop-primary">
@@ -139,7 +176,12 @@ const HowItWorksPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-background p-6 rounded-lg border border-border/40 shadow-sm">
+                {/* Age Estimation */}
+                <div 
+                  className={`bg-background p-6 rounded-lg border border-border/40 shadow-sm transition-all duration-700 delay-1000 ${
+                    pageLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                  }`}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <LineChart className="h-6 w-6 text-crop-primary" />
                     <h3 className="text-xl font-semibold text-crop-primary">
@@ -187,7 +229,12 @@ const HowItWorksPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-background p-6 rounded-lg border border-border/40 shadow-sm">
+                {/* Variety Identification */}
+                <div 
+                  className={`bg-background p-6 rounded-lg border border-border/40 shadow-sm transition-all duration-700 delay-1200 ${
+                    pageLoaded ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
+                  }`}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <FileType className="h-6 w-6 text-crop-primary" />
                     <h3 className="text-xl font-semibold text-crop-primary">
@@ -230,7 +277,12 @@ const HowItWorksPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-background p-6 rounded-lg border border-border/40 shadow-sm">
+                {/* Model Training & Development */}
+                <div 
+                  className={`bg-background p-6 rounded-lg border border-border/40 shadow-sm transition-all duration-700 delay-1400 ${
+                    pageLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"
+                  }`}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <Cpu className="h-6 w-6 text-crop-primary" />
                     <h3 className="text-xl font-semibold text-crop-primary">
@@ -300,7 +352,12 @@ const HowItWorksPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-background p-6 rounded-lg border border-border/40 shadow-sm">
+                {/* Dataset & Training Process */}
+                <div 
+                  className={`bg-background p-6 rounded-lg border border-border/40 shadow-sm transition-all duration-700 delay-1600 ${
+                    pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                  }`}
+                >
                   <div className="flex items-center gap-3 mb-4">
                     <FileImage className="h-6 w-6 text-crop-primary" />
                     <h3 className="text-xl font-semibold text-crop-primary">
@@ -368,11 +425,17 @@ const HowItWorksPage = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-crop-secondary to-crop-primary text-white">
+        {/* CTA Section with Animation */}
+        <section 
+          className={`py-16 bg-gradient-to-br from-crop-secondary to-crop-primary text-white transition-all duration-1000 delay-1800 ${
+            pageLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+              <h2 className={`text-2xl md:text-3xl font-bold mb-6 transition-all duration-700 ${
+                pageLoaded ? "scale-100" : "scale-90"
+              }`}>
                 Ready to Try It Yourself?
               </h2>
               <p className="text-lg opacity-90 mb-8">
@@ -382,7 +445,9 @@ const HowItWorksPage = () => {
               </p>
               <a
                 href="/"
-                className="px-6 py-3 bg-white text-crop-primary font-medium rounded-lg hover:bg-opacity-90 transition-colors"
+                className={`px-6 py-3 bg-white text-crop-primary font-medium rounded-lg hover:bg-opacity-90 transition-all duration-500 ${
+                  pageLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                } hover:transform hover:-translate-y-1 hover:shadow-lg`}
               >
                 Start Analyzing
               </a>
@@ -390,6 +455,43 @@ const HowItWorksPage = () => {
           </div>
         </section>
       </main>
+
+      {/* Animation Styles */}
+      <style >{`
+        @keyframes pulse-gentle {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+        
+        @keyframes highlight {
+          0% { text-shadow: 0 0 0 rgba(0,0,0,0); }
+          30% { text-shadow: 0 0 10px rgba(52, 152, 83, 0.5); }
+          100% { text-shadow: 0 0 0 rgba(0,0,0,0); }
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        
+        .animate-pulse-gentle {
+          animation: pulse-gentle 3s infinite ease-in-out;
+        }
+        
+        .animate-float {
+          animation: float 5s infinite ease-in-out;
+        }
+        
+        /* Add smooth transitions for hover states */
+        .hover-lift {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+      `}</style>
 
       <Footer />
     </div>
